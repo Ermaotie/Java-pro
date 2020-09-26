@@ -159,3 +159,6 @@ public class Test {
 
 * instanceof
 判断左边的实例是否属于右边的类
+
+
+
