@@ -84,4 +84,30 @@ public class TriangleTest{
     - UTF-8 兼容ASCII，不够就变长(1到4个字节)
     - UTF-16 变长2或4个字节
     - UTF-32 统统4个字节存放
-    
+* 国际化编程
+    * Java是第一个设计成支持国际化编程的语言
+    - java.util.ResourceBundle 用于加载一个语言_国家语言包
+    - java.util.Local 定义一个 语言_国家
+
+    * 语言文件
+    - 一个Properties文件
+    - 包含K-V对
+    - 命名规则
+        * 包名+语言（+国家地区）.properties
+        * message.properties
+        * message_zh.properties
+        * message_zh_CN.properties
+    - 必须是ASCII码文件，ASCII以外的必须用Unicode的表示
+        - 可以采用native2ascii.exe(%JAVA_HOME%\bin 目录)进行转码
+```
+Local myLocale = Local.getDefault();
+// 根据指定语言_国家环境加载资源文件
+ResourceBundle bundle = ResourceBundle.getBundle("message",myLocale);
+// 打印国际化语言的“hello”
+System.out.println(bunlde.getString("hello"));
+```
+
+## 高级文件处理
+* xml简介
+    - 数据+含义 适用于传输数据
+    - 
