@@ -185,11 +185,13 @@ public static <T> Iterval<T> getReverse(Interval<T> interval){
 ```
 * extends 表示限定继承后面的类或接口的class才合法，仅可extends，不能implements
 * 以&连接，最多一个类且必须在第一位
-* 泛型通配符
+* **泛型通配符**
     * <T ? extends xxx>
     限定上限，生产者，只能读不能写
+    // ArrayList<? extends A> list = new ArrayList<B>() # B只能为A或A的子类
     * <T ? super xxx>
     限定下限，消费者，只写不读
+    // ArrayList<? extends A> list = new ArrayList<B>() # B只能为A或A的父类
 
 ### 泛型实现本质
 * java是向后兼容的，jdk1.5引入泛型，而1.4前class文件在之后的JVM中依然可以运行。**因此，JVM中不存在泛型对象，而是采用了类型擦除技术，只有普通的类和方法。
@@ -202,7 +204,78 @@ Object a1 = fruits.getFirst();
 Fruit a = (Fruit) a1;
 ```
 ### java类型的协变和逆变
+* 服从PECS(Producter Extends Cosumer Super)
+* 描述一对存在继承关系的引用类型成为泛型类的参数时，对应产生的泛型类之间的关系
 协变 数组 泛型extend
 逆变 泛型super
 不变 普通泛型
 双变
+
+## 反射
+- 程序可以访问，检测和修改它本身状态或行为的能力，即自描述和自控制
+- 插上动态语言的翅膀
+- java.lang.reflect
+
+- 在运行中分析类的能力
+- 在运行中查看和操作对象
+    * **基于反射自由创建对象**
+    * 构建出无法直接访问的类，方法，成员变量
+    * set或get无法访问的成员变量
+    * 函数指针
+
+### 创建对象
+
+1. 静态编码&编译
+2. 克隆（clone）
+- 新对象与旧对象内容一致，新对象是旧对象的副本
+- implements Cloneable
+    必须实现该接口
+    ```
+    public class B implements Cloneable
+    * PS：
+    #### 四大接口
+    * Comparable
+    * Runnable
+    * Serializable
+    * Cloneable
+- **深克隆，浅克隆**
+3. 序列化（Serializable）和反序列化（Deserializable）
+- 直接存在内存中
+- 将废弃
+4. 反射（动态性）
+- newInstance
+- 本质上还是调用原本类的构造函数，但是可以通过字符串的方式获取类中的方法，然后执行
+
+### 编译器API
+- 对.java文件进行即时编译
+- 对字符串即时编译
+- 监听在编译过程中产生的警告和错误
+- 在代码中运行编译器(并非：Runtime 命令行调用javac)
+
+* JavaCompiler
+- Java 1.6推出，位于Java.tools包中。
+- 可用在程序文件中的Java编译器接口(代替javac.exe)
+- 在程序中编译java文件，产生class文件。
+- run方法 需要.java文件仅能编译产生class监控错误信息，且不能指定输出路径
+- getTask 不需要.java文件，可以编译java源文件包括在内存中的java文件(字符串)，生成class文件。
+
+## Java代理
+
+### 代理模式
+* 代理模式
+- Proxy Pattern，23个经典模式之一，又称委托模式
+- 为目标包装了一个代理，这个代理可以控制对目标的访问。
+    * 外界仅能访问到代理，实际由代理来调用目标对象。
+    * 代理对象可以添加监控和审查处理
+* **中间层**
+
+* 静态代理
+    - 代理对象持有目标对象的句柄
+    - 所有调用目标对象的方法，都需要调用代理对象的方法
+    - 对每个方法，都需要静态编译
+    - 对方法的实现可以进行前置处理和后置处理
+    * 使用流程
+    - 创建目标对象
+    - 加入代理
+    - 访问代理对象方法
+
