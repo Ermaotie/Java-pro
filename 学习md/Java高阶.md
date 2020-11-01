@@ -279,3 +279,52 @@ Fruit a = (Fruit) a1;
     - 加入代理
     - 访问代理对象方法
 
+## 动态代理
+- 对目标对象的方法每次被调用，进行动态拦截
+方法调用流程
+1. 创建目标对象
+2. 创建调用处理器对象
+3. 动态生成代理对象
+4. 客户端通过代理对象调用方法
+
+Demo:
+
+```
+import java.lang.reflect.Proxy;
+
+//动态代理模式
+public class DynamicProxyDemo {
+    public static void main(String[] args) {
+    	//1.创建目标对象
+    	SubjectImpl realSubject = new SubjectImpl();    
+    	
+    	//2.创建调用处理器对象
+    	ProxyHandler handler = new ProxyHandler(realSubject); 
+    	
+    	//3.动态生成代理对象
+        Subject proxySubject = 
+        		(Subject)Proxy.newProxyInstance
+        		  (SubjectImpl.class.getClassLoader(),
+                   SubjectImpl.class.getInterfaces(), handler); 
+        //proxySubject真实类型com.sun.proxy.$Proxy0
+        //proxySubject继承Proxy类，实现Subject接口
+        //newProxyInstance的第二个参数，就是指定代理对象的接口
+        
+        //4.客户端通过代理对象调用方法
+        //本次调用将自动被代理处理器的invoke方法接收
+        proxySubject.request();    
+        
+        System.out.println(proxySubject.getClass().getName());
+        System.out.println(proxySubject.getClass().getSuperclass().getName());
+    }
+}
+
+```
+
+
+### AOP编程
+* Aspect Oriented Programming
+- 将通用需求从众多类中分离出来，使得很多类共享一个行为。这样一旦发生变化，不必修改很多类，只需要修改这个行为即可。
+- 分离代码的耦合(高内聚，低耦合)
+- 业务逻辑变化不需要修改源代码
+- 加快编程速度和测试速度
