@@ -110,4 +110,74 @@ System.out.println(bunlde.getString("hello"));
 ## 高级文件处理
 * xml简介
     - 数据+含义 适用于传输数据
-    - 
+    - ...
+
+
+## Java多线程与多进程
+
+### 多进程＆多线程
+#### 多进程
+* 每个独立执行的任务称为进程
+* OS将时间划分为多个时间片
+* **每个时间片内将CPU分配给每一个任务，时间片结束，CPU自动回收，再分配给其他任务**整体上看，所有任务同步进行，在CPU上，任务按照**串行**依次运行（单核CPU），单核上多进程只能串行进行。
+
+* 多进程优点
+    * IO堵塞时，提高CPU利用率
+* 缺点
+    * 笨重，不好管理，不好切换
+#### 多线程
+* 一个程序可以包括多个子任务（可串/可并）
+* 每个子任务可以称为一个线程
+* 一个子任务堵塞，可以调度给另一个子任务，而不需要更换进程。
+
+* 多线程 vs 多进程
+- 线程共享数据
+- 线程通讯更高效
+- 线程更轻量级，易切换
+- 多个线程更容易管理
+
+### 多线程实现
+有且只有两种方法
+* java.lang.Thread
+- 线程继承Thread类，实现run方法
+* java.lang.Runnable接口
+- 线程实现Runnable接口，实现run方法
+
+```
+// 继承Thread类
+public class Thread1 extends Thread{
+    public void run()
+    {
+        System.out.println("hello");
+    }
+}
+
+// 实现Runnable接口
+public class Thread2 implements Runnable{
+    public void run()
+    {
+        System.out.println("hello");
+    }
+}
+```
+ * 启动
+ - start()，会自动以新进程调用run()  （JNI Java Native Interface: Java调用C/C++程序的底层API接口）
+ - 直接调用run(),将变成串行执行
+ - 同一个线程，多次start()会报错
+ - 多个线程启动，启动先后顺序随机
+ - 线程无需管理
+ - main()可能早于新线程执行，整个程序并不结束
+ - 整个程序终止是所有线程都终止
+
+ * Thread vs Runnable
+ - Thread 占据了父类的名额，不如Runnable方便
+ - Runnable需要Thread类支持
+ - Runnable 更容易实现多线程中的资源共享，在同一个main内，不需要static变量
+ * 结论: 建议实现Runnable接口来完成多线程
+
+ ### 多线程之间的信息共享
+
+ * 细粒度: 线程之间有交流通讯
+ - 通过共享变量--> 信息共享
+ - JDK原生库暂不支持发送消息(类似MPI并行库直接发送消息)(MPI是一个信息传递应用接口，包括协议和语义说明。MPI的目标是高性能，大规模，可移植 Message_Passing_Interface)
+ 
