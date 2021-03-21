@@ -181,3 +181,5 @@ public class Thread2 implements Runnable{
  - 通过共享变量--> 信息共享
  - JDK原生库暂不支持发送消息(类似MPI并行库直接发送消息)(MPI是一个信息传递应用接口，包括协议和语义说明。MPI的目标是高性能，大规模，可移植 Message_Passing_Interface)
  
+
+ 
